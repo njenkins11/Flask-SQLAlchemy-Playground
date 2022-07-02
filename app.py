@@ -50,7 +50,7 @@ def get_user(name):
         return '<h1> Invalid name. </h1>' # If the name is not found
 
 # Searches for like terms. Example: Search "n" and one results may be 'Nicole'
-@app.route('/search/<name>')
+@app.route('/search/name=<name>')
 def search_user(name):
     user = User.query.filter(User.name.like('%'+name+'%')).first() # 'like' searches for like terms. The 'first' is, once again, only showing the first result.
     # If user -> show user name, if not then show error.
