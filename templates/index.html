@@ -14,7 +14,7 @@
         <!-- Loops through the users in this current page-->
         {%for user in users.items%}
         <p>
-            Name: {{user.name}} Location: {{user.location}}
+            <a href = "{{url_for('get_user', id=user.id)}}"> Name: {{user.name}} Location: {{user.location}} </a>
         </p>
         {%endfor%}
         <!-- Checks to see if there is either a next button or a previous button needed-->

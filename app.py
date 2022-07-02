@@ -6,6 +6,8 @@ from datetime import datetime
 # Important docs: https://flask-sqlalchemy.palletsprojects.com/en/2.x/index.html
 # Filter docs: https://docs.sqlalchemy.org/en/14/orm/tutorial.html#common-filter-operators
 
+PAGE_SIZE = 10 # For pagination
+
 # Instantiate flask app
 app = Flask(__name__)
 
@@ -41,14 +43,14 @@ def add_user(name, location):
 
 # Queries to find the correct name. The left hand side is the column name, and the right hand side is the parameter.
 # It will filter out the User table object from the name
-@app.route('/<name>')
-def get_user(name):
-    user = User.query.filter_by(name=name).first() # .first will only show the first result for the query. '.all' will show every result.
+@app.route('/user/<int:id>')
+def get_user(id):
+    user = User.query.get(id) # Gets the user by the PK, or id in this case
     
-    if user: # If the user is found, then the location will be printed. Else, it will display a warning to prevent an internal server error.
-        return f'<h1> The user\'s is located in: {user.location} </h1>' # This will return the user's location based on the search above.
+    if user: # If the user is found, then this user's info will be printed. Else, it will display a warning to prevent an internal server error.
+        return f'<h1> This user\'s name is: {user.name}, and joined on the date of {user.date_created} at {user.location} </h1>' # This will return the user's info based on the search above.
     else:
-        return '<h1> Invalid name. </h1>' # If the name is not found
+        return '<h1> Invalid ID. </h1>' # If the name is not found
 
 # Searches for like terms. Example: Search "n" and one results may be 'Nicole'
 @app.route('/search/name=<name>')
@@ -85,7 +87,7 @@ def search_users(name):
 
 @app.route('/<int:page>')
 def index(page=1):
-    users = User.query.order_by(User.id).paginate(page,10,error_out=False) # Pagination!!!
+    users = User.query.order_by(User.id).paginate(page,PAGE_SIZE,error_out=False) # Pagination!!!
     return render_template("index.html", users=users) # Returns users to allow HTML to loop through the users for this current page
 
 # Redirects to the index page above
