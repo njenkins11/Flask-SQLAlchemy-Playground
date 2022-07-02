@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 # Important docs: https://flask-sqlalchemy.palletsprojects.com/en/2.x/index.html
+# Filter docs: https://docs.sqlalchemy.org/en/14/orm/tutorial.html#common-filter-operators
 
 # Instantiate flask app
 app = Flask(__name__)
@@ -67,3 +68,17 @@ def search_location(location):
         return f'<h1> User with this location is: {user.name} </h1>'
     else:
         return f'<h1> Could not find user based on location. </h1>'
+
+@app.route('/search-list/name=<name>')
+def search_users(name):
+    users = User.query.filter(User.name.like('%'+name+'%')) # Gets ALL of the similar names to this given name.
+    # Loop through results if found
+    # Pagination will probably be needed w/ more data in db
+    result = ""
+
+    if users:
+        for user in users:
+            result += f'<h1><li>Name: {user.name} \t Location: {user.location}</li></h1>'
+        return result
+    else:
+        return f'<h1> Could not find user. </h1>'
