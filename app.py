@@ -37,3 +37,14 @@ def index(name, location):
     db.session.commit()
 
     return '<h1>Added New User!</h1>'
+
+# Queries to find the correct name. The left hand side is the column name, and the right hand side is the parameter.
+# It will filter out the User table object from the name
+@app.route('/<name>')
+def get_user(name):
+    user = User.query.filter_by(name=name).first() # .first will only show the first result for the query. '.all' will show every result.
+    
+    if user: # If the user is found, then the location will be printed. Else, it will display a warning to prevent an internal server error.
+        return f'<h1> The user\'s is located in: {user.location} </h1>' # This will return the user's location based on the search above.
+    else:
+        return '<h1> Invalid name. </h1>' # If the name is not found
