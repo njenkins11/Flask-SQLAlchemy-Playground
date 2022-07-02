@@ -1,0 +1,24 @@
+body {
+    background-color: darkslategray;
+    margin: 50px;
+    float: center;
+    position: center;
+}
+
+h1{
+    size: 20px;
+    color: white;
+    font-family: Georgia, serif;
+}
+
+h2{
+    size: 15px;
+    color: white;
+    font-family: Georgia, serif;
+}
+
+p{
+    size: 10px;
+    color: white;
+    font-family: Georgia, serif;
+}

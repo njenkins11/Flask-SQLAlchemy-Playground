@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 from datetime import datetime
@@ -32,7 +32,7 @@ class User(db.Model):
 # Creates a route and defines any parameters for the url.
 # The method after that defines what to do with that information. In this case, it creates the user.
 @app.route('/<name>/<location>')
-def index(name, location):
+def add_user(name, location):
     user = User(name=name, location=location)
     db.session.add(user)
     db.session.commit()
@@ -82,3 +82,13 @@ def search_users(name):
         return result
     else:
         return f'<h1> Could not find user. </h1>'
+
+@app.route('/<int:page>')
+def index(page=1):
+    users = User.query.order_by(User.id).paginate(page,10,error_out=False) # Pagination!!!
+    return render_template("index.html", users=users) # Returns users to allow HTML to loop through the users for this current page
+
+# Redirects to the index page above
+@app.route('/')
+def redirect_index():
+    return redirect(url_for('index', page=1))
