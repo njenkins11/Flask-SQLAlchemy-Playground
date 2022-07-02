@@ -48,3 +48,13 @@ def get_user(name):
         return f'<h1> The user\'s is located in: {user.location} </h1>' # This will return the user's location based on the search above.
     else:
         return '<h1> Invalid name. </h1>' # If the name is not found
+
+# Searches for like terms. Example: Search "n" and one results may be 'Nicole'
+@app.route('/search/<name>')
+def search_user(name):
+    user = User.query.filter(User.name.like('%'+name+'%')).first() # 'like' searches for like terms. The 'first' is, once again, only showing the first result.
+    # If user -> show user name, if not then show error.
+    if user:
+        return f'<h1> First result of search: {user.name} </h1>'
+    else:
+        return f'<h1> Could not find user. </h1>'
