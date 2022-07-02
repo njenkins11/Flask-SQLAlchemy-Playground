@@ -58,3 +58,12 @@ def search_user(name):
         return f'<h1> First result of search: {user.name} </h1>'
     else:
         return f'<h1> Could not find user. </h1>'
+
+@app.route('/search/location=<location>')
+def search_location(location):
+    user = User.query.filter(User.location.like('%'+location+'%')).first()
+
+    if user:
+        return f'<h1> User with this location is: {user.name} </h1>'
+    else:
+        return f'<h1> Could not find user based on location. </h1>'
