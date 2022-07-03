@@ -1,13 +1,36 @@
 <!DOCTYPE html>
-
+{%extends 'footer.html'%}
+{%block body%}
 <html>
+<head> 
+    <link rel="stylesheet" href ="{{ url_for('static', filename='styles/index.css') }}" type="text/css" />
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.png')}}"/>
+</head>
+<html>
+<div class = "home" style="height:65vh">
     <body>
-        <h1> Name: {{user.name}} </h1>
-        <p> Location: {{user.location}} </p>
-        <p> Joined: {{user.date_created}} </p>
-        <a href = "{{url_for('index',page=1) }}"> Back </a>
-        <a href = "{{url_for('delete_user', id=user.id) }}"> Delete </a>
-        <a href = "{{url_for('update_user', id=user.id) }}"> Update </a>
-    </body>
-</html>
+        <h1> {{user.name}} </h1>
+        <hr>
+        <table style="width:100%; text-align: center; justify-content: center;">
+            <tr>
+                <th style = "color: white; width:10%; text-align: center;"><p>Location</p></th>
+                <th style = "color: white; width:10%; text-align: center;"><p>Creation</p></th>
+            </tr>
+            <tr>
+            <td style = "color: white; width:10%; text-align: center;"><p>{{user.location}} </p></td>
+            <td style = "color: white; width:10%; text-align: center;"><p>{{user.date_created}} </p><td>
+            </tr>
+        </table>
+        <br>
+        <table>
+            <tr>
+            <td style="width:10%"><a href = "{{url_for('index',page=1) }}" style = "color: white; text-decoration: none;"> Back </a></td>
+            <td style="width:10%"><a href = "{{url_for('delete_user', id=user.id) }}" style = "color: white; text-decoration: none;"> Delete </a></td>
+            <td style="width:10%"><a href = "{{url_for('update_user', id=user.id) }}" style = "color: white; text-decoration: none;"> Update </a></td>
+            </tr>
+        </table>
 
+    </body>
+</div>
+</html>
+{%endblock%}
