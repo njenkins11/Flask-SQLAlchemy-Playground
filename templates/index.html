@@ -11,9 +11,19 @@
 
         <a href={{url_for('create_user')}}> Create User</a>
 
+        <form method='POST'>
+            <label for="name"> Search User </label>
+            <input type="text" name="name" placeholder="Enter a name" value="{{ request.form['name'] }}"> </input>
+
+            <button type="submit"> Search </button>
+        </form>
+
         <p> Current People: </p>
         
         <!-- Loops through the users in this current page-->
+        {%if users.total == 0 %}
+            <p> No users were found. </p>
+        {%endif%}
         {%for user in users.items%}
         <p>
             <a href = "{{url_for('get_user', id=user.id)}}"> Name: {{user.name}} Location: {{user.location}} </a>

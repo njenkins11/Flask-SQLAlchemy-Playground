@@ -33,16 +33,6 @@ class User(db.Model):
 # By running 'from app import db'
 # 'db.create_all()
 
-# Creates a route and defines any parameters for the url.
-# The method after that defines what to do with that information. In this case, it creates the user.
-@app.route('/<name>/<location>')
-def add_user(name, location):
-    user = User(name=name, location=location)
-    db.session.add(user)
-    db.session.commit()
-
-    return '<h1>Added New User!</h1>'
-
 # Queries to find the correct name. The left hand side is the column name, and the right hand side is the parameter.
 # It will filter out the User table object from the name
 @app.route('/user/<int:id>')
@@ -54,42 +44,16 @@ def get_user(id):
     else:
         return '<h1> Invalid ID. </h1>' # If the name is not found
 
-# Searches for like terms. Example: Search "n" and one results may be 'Nicole'
-@app.route('/search/name=<name>')
-def search_user(name):
-    user = User.query.filter(User.name.like('%'+name+'%')).first() # 'like' searches for like terms. The 'first' is, once again, only showing the first result.
-    # If user -> show user name, if not then show error.
-    if user:
-        return f'<h1> First result of search: {user.name} </h1>'
-    else:
-        return f'<h1> Could not find user. </h1>'
-
-@app.route('/search/location=<location>')
-def search_location(location):
-    user = User.query.filter(User.location.like('%'+location+'%')).first()
-
-    if user:
-        return f'<h1> User with this location is: {user.name} </h1>'
-    else:
-        return f'<h1> Could not find user based on location. </h1>'
-
-@app.route('/search-list/name=<name>')
-def search_users(name):
-    users = User.query.filter(User.name.like('%'+name+'%')) # Gets ALL of the similar names to this given name.
-    # Loop through results if found
-    # Pagination will probably be needed w/ more data in db
-    result = ""
-
-    if users:
-        for user in users:
-            result += f'<h1><li>Name: {user.name} \t Location: {user.location}</li></h1>'
-        return result
-    else:
-        return f'<h1> Could not find user. </h1>'
-
-@app.route('/<int:page>')
+# Home page
+@app.route('/<int:page>', methods=('GET', 'POST'))
 def index(page=1):
     users = User.query.order_by(User.id).paginate(page,PAGE_SIZE,error_out=False) # Pagination!!!
+
+    # If it is a post request, filter through the db and re-render the website with the new users.
+    if request.method == 'POST':
+        search_name = request.form['name']
+        if search_name:
+            users = User.query.filter(User.name.like('%'+search_name+'%')).paginate(page,PAGE_SIZE,error_out=False)
     return render_template("index.html", users=users) # Returns users to allow HTML to loop through the users for this current page
 
 # Redirects to the index page above
@@ -149,3 +113,37 @@ def update_user(id):
         return redirect(url_for('index',page=1))
     # Returns render if it was a GET request
     return render_template('update.html', user=user)
+
+# NOTESSSSS
+
+# Creates a route and defines any parameters for the url.
+# The method after that defines what to do with that information. In this case, it creates the user.
+@app.route('/<name>/<location>')
+def add_user(name, location):
+    user = User(name=name, location=location)
+    db.session.add(user)
+    db.session.commit()
+
+    return '<h1>Added New User!</h1>'
+
+# Searches for like terms. Example: Search "n" and one results may be 'Nicole'
+@app.route('/search/name=<name>')
+def search_user(name):
+    user = User.query.filter(User.name.like('%'+name+'%')).first() # 'like' searches for like terms. The 'first' is, once again, only showing the first result.
+    # If user -> show user name, if not then show error.
+    if user:
+        return f'<h1> First result of search: {user.name} </h1>'
+    else:
+        return f'<h1> Could not find user. </h1>'
+
+@app.route('/search/location=<location>')
+def search_location(location):
+    user = User.query.filter(User.location.like('%'+location+'%')).first()
+
+    if user:
+        return f'<h1> User with this location is: {user.name} </h1>'
+    else:
+        return f'<h1> Could not find user based on location. </h1>'
+
+
+
