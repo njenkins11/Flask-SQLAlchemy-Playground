@@ -127,3 +127,25 @@ def delete_user(id):
         db.session.commit()
     
     return redirect(url_for('index',page=1))
+
+# Updates the user based on information.
+@app.route('/update/<int:id>', methods=('GET', 'POST'))
+def update_user(id):
+    user = User.query.get(id)
+    if request.method == 'POST':
+        name = request.form['name']
+        location = request.form['location']
+
+        # If there is a name or a location, that means the user wants to change it
+        if name:
+            user.name = name
+        if location:
+            user.location = location
+        
+        # Updates the user by readding it. As long as it has the same id, it will update the user with that specific id, like in Spring Hibernate.
+        db.session.add(user)
+        db.session.commit()
+        # Redirects if the request is a POST
+        return redirect(url_for('index',page=1))
+    # Returns render if it was a GET request
+    return render_template('update.html', user=user)

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+
+<html>
+    <body>
+        <form method='POST'>
+            <!-- Getting the user's name -->
+            <label for="name">Name</label> <!-- The label is essentially a variable that carries over to Flask. Or a JSON attribute.-->
+            <input type="text" name="name" placeholder= {{user.name}} value="{{ request.form['name'] }}"></input>
+    
+            <!-- Getting the user's location -->
+            <label for="location"> Location</label>
+            <input type="text" name="location" placeholder= {{user.location}} value="{{ request.form['location'] }}"></input>
+            
+            <!-- Creates the button to submit the form-->
+            <button type="submit">Submit</button>
+        </form>
+</html>
