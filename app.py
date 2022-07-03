@@ -48,7 +48,7 @@ def get_user(id):
     user = User.query.get(id) # Gets the user by the PK, or id in this case
     
     if user: # If the user is found, then this user's info will be printed. Else, it will display a warning to prevent an internal server error.
-        return f'<h1> This user\'s name is: {user.name}, and joined on the date of {user.date_created} at {user.location} </h1>' # This will return the user's info based on the search above.
+        return render_template('user.html', user=user) # This will return the user's info based on the search above to the template (for user var) for rendering.
     else:
         return '<h1> Invalid ID. </h1>' # If the name is not found
 
@@ -91,6 +91,7 @@ def index(page=1):
     return render_template("index.html", users=users) # Returns users to allow HTML to loop through the users for this current page
 
 # Redirects to the index page above
+# Everyone must see the list mahaahahwa!!!
 @app.route('/')
 def redirect_index():
     return redirect(url_for('index', page=1))
