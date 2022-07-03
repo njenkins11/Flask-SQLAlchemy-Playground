@@ -18,8 +18,10 @@
             <button type="submit"> Search </button>
         </form>
 
+        {%if users.total != 0%}
+        <p> About {{users.total}} total results. Currently on page {{users.page}}/{{users.pages}}. </p>
         <p> Current People: </p>
-        
+        {%endif%}
         <!-- Loops through the users in this current page-->
         {%if users.total == 0 %}
             <p> No users were found. </p>
