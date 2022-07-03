@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{%extends 'footer.html'%}
+{%block body%}
 <html>
 <head> 
     <link rel="stylesheet" href ="{{ url_for('static', filename='styles/index.css') }}" type="text/css" />
@@ -21,7 +23,7 @@
         {%if users.total != 0%}
             <p> About {{users.total}} total results. Currently on page {{users.page}}/{{users.pages}}. </p>
             <hr>
-            <p> Click on a person's name to edit! </p>
+                        <p> Click on a person's name to edit! </p>
             <p> Current People: </p>
         {%endif%}
         <!-- Loops through the users in this current page-->
@@ -46,6 +48,7 @@
         {%endfor%}
              </table>
         <hr>
+        <br>
         <!-- Checks to see if there is either a next button or a previous button needed-->
         {%if users.has_prev%}
             <a href = "{{url_for('index', page=users.prev_num) }}"> Previous</a>
@@ -56,4 +59,5 @@
     </body>
 </div>
 </html>
+{%endblock%}
 
