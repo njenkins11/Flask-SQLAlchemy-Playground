@@ -1,9 +1,10 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, flash, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 
 from datetime import datetime
 
 # Important docs: https://flask-sqlalchemy.palletsprojects.com/en/2.x/index.html
+# Queries: https://flask-sqlalchemy.palletsprojects.com/en/2.x/queries/
 # Filter docs: https://docs.sqlalchemy.org/en/14/orm/tutorial.html#common-filter-operators
 
 PAGE_SIZE = 10 # For pagination
@@ -14,6 +15,7 @@ app = Flask(__name__)
 # Have to have config before instantiating SQLAlchemy
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # Prevents SQLAlchemy from showing errors when changing items
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3' # Location or URL for database
+app.config['SECRET_KEY'] = '2t3wlekgj203520523wslkd20358269243'
 
 # Instantiate DB object
 db = SQLAlchemy(app)
@@ -95,3 +97,21 @@ def index(page=1):
 @app.route('/')
 def redirect_index():
     return redirect(url_for('index', page=1))
+
+# Create user form
+@app.route('/create/', methods=('GET', 'POST')) # Have to get the information from the user to fill out a user row in the db.
+def create_user():
+    if request.method == 'POST':
+        name = request.form['name'] # Gets the information from the create.html. The variables are assigned in that form.
+        location = request.form['location']
+        if not name:
+            flash('Name is required')
+        elif not location:
+            flash('Location is required')
+        else:
+            user = User(name=name,location=location)
+            db.session.add(user)
+            db.session.commit()
+            flash('Sucess!')
+            return redirect(url_for('index',page=1))
+    return render_template('create.html')

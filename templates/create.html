@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+<h1> Creating a User </h1>
+<a href={{url_for('redirect_index')}}> Back </a>
+<br>
+<p> Insert the information below.</p>
+
+<!-- Creates the form to send information back to Flask from the user.-->
+    <form method='POST'>
+        <!-- Getting the user's name -->
+        <label for="name">Name</label> <!-- The label is essentially a variable that carries over to Flask. Or a JSON attribute.-->
+        <input type="text" name="name" placeholder="User's name" value="{{ request.form['name'] }}"></input>
+
+        <!-- Getting the user's location -->
+        <label for="location"> Location</label>
+        <input type="text" name="location" placeholder="User's location" value="{{ request.form['location'] }}"></input>
+        
+        <!-- Creates the button to submit the form-->
+        <button type="submit">Submit</button>
+    </form>
+</html>
