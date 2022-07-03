@@ -1,0 +1,40 @@
+.home {
+    height: 120vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(52, 58, 64, 1);
+    object-fit: contain;
+    padding: 20px;
+}
+
+.home > h1{
+    size: 20px;
+    color: white;
+    font-family: Georgia, serif;
+}
+
+.home > h2{
+    size: 15px;
+    color: white;
+    font-family: Georgia, serif;
+}
+
+.home > p{
+    size: 10px;
+    color: white;
+    font-family: Georgia, serif;
+}
+
+.home > a{
+    size: 10px;
+    color: white;
+    text-decoration: none;
+
+}
+
+.home > hr{
+    color:white;
+    width: 100%;
+}

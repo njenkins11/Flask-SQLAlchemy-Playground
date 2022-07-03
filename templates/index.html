@@ -1,36 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head> 
-    <link ref='stylesheet' type="=text/css"  href = '{{ url_for('static', filename='index.css') }}'>
+    <link rel="stylesheet" href ="{{ url_for('static', filename='styles/index.css') }}" type="text/css" />
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.png')}}"/>
 </head>
-
+<div class = "home">
     <body>
         <h1> Welcome! </h1>
         <h2> This is a simple website that does CRUDS with Flask + SQLAlchemy. </h2>
-        <h2> Feel free to give it a try! </h2>
-
-        <a href={{url_for('create_user')}}> Create User</a>
-
+        <p> Start by adding a user, editing users below, or searching! </p>
+        <a href="{{url_for('create_user')}}" style="font-family: Georgia, serif;"> Add User</a>
+        <hr>
+        <br>
         <form method='POST'>
-            <label for="name"> Search User </label>
-            <input type="text" name="name" placeholder="Enter a name" value="{{ request.form['name'] }}"> </input>
+            <label for="name" style="color:white; font-family: Georgia, serif;"> Search User </label>
+            <input type="text" name="name" style="font-family: Georgia, serif;" placeholder="Enter a name" value="{{ request.form['name'] }}"> </input>
 
-            <button type="submit"> Search </button>
+            <button type="submit" style= "font-family: Georgia, serif;"> Search </button> 
         </form>
-
         {%if users.total != 0%}
-        <p> About {{users.total}} total results. Currently on page {{users.page}}/{{users.pages}}. </p>
-        <p> Current People: </p>
+            <p> About {{users.total}} total results. Currently on page {{users.page}}/{{users.pages}}. </p>
+            <hr>
+            <p> Click on a person's name to edit! </p>
+            <p> Current People: </p>
         {%endif%}
         <!-- Loops through the users in this current page-->
         {%if users.total == 0 %}
             <p> No users were found. </p>
+        {%else%}
+            <table style="width:60%; border-collapse:collapse">
+                <tr style = "border-bottom: 3px solid white">
+                    <th style="padding:8px; width:30%; color:white;">Name</th>
+                    <th style="padding:8px; width:30%; color:white;">Location</th>
+                </tr>
         {%endif%}
         {%for user in users.items%}
-        <p>
-            <a href = "{{url_for('get_user', id=user.id)}}"> Name: {{user.name}} Location: {{user.location}} </a>
-        </p>
+            <tr>
+                <td style="color:white; word-spacing: 10px; hover:orange; padding:8px; width:30%; text-align: center;"> 
+                <a href = "{{url_for('get_user', id=user.id)}}" style="color:white; text-decoration: none;"> 
+                {{user.name}} </td></a>
+                <td style="color:white; text-decoration: none; word-spacing: 10px; hover:orange; padding:8px; width:30%; text-align: center;"> 
+                {{user.location}} </td>
+            </tr>
+
         {%endfor%}
+             </table>
+        <hr>
         <!-- Checks to see if there is either a next button or a previous button needed-->
         {%if users.has_prev%}
             <a href = "{{url_for('index', page=users.prev_num) }}"> Previous</a>
@@ -39,5 +54,6 @@
             <a href = "{{url_for('index', page=users.next_num) }}"> Next </a>
         {%endif%}
     </body>
+</div>
 </html>
 
