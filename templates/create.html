@@ -1,22 +1,31 @@
 <!DOCTYPE html>
-
+{%extends 'footer.html'%}
+{%block body%}
 <html>
+    <head> 
+        <link rel="stylesheet" href ="{{ url_for('static', filename='styles/index.css') }}" type="text/css" />
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.png')}}"/>
+    </head>
+    <div class = "home" style="height:65vh">
 <h1> Creating a User </h1>
-<a href={{url_for('redirect_index')}}> Back </a>
 <br>
 <p> Insert the information below.</p>
 
 <!-- Creates the form to send information back to Flask from the user.-->
     <form method='POST'>
         <!-- Getting the user's name -->
-        <label for="name">Name</label> <!-- The label is essentially a variable that carries over to Flask. Or a JSON attribute.-->
+        <label for="name" style="color:white">Name</label> <!-- The label is essentially a variable that carries over to Flask. Or a JSON attribute.-->
         <input type="text" name="name" placeholder="User's name" value="{{ request.form['name'] }}"></input>
 
         <!-- Getting the user's location -->
-        <label for="location"> Location</label>
+        <label for="location" style="color:white"> Location</label>
         <input type="text" name="location" placeholder="User's location" value="{{ request.form['location'] }}"></input>
-        
+        <br>
+        <br>
         <!-- Creates the button to submit the form-->
-        <button type="submit">Submit</button>
+        <button type="submit" style="position: relative;">Submit</button> 
+        <a href={{url_for('redirect_index')}} style="color:white; text-decoration: none;"> Back </a>
     </form>
+</div>
 </html>
+{%endblock%}
