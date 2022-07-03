@@ -26,6 +26,13 @@
         <button type="submit" style="position: relative;">Submit</button> 
         <a href={{url_for('redirect_index')}} style="color:white; text-decoration: none;"> Back </a>
     </form>
+    {%with messages = get_flashed_messages()%}
+        {%if messages%}
+            {%for message in messages%}
+                <p>{{message}}</p>
+            {%endfor%}
+        {%endif%}
+    {%endwith%}
 </div>
 </html>
 {%endblock%}
