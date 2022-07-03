@@ -104,14 +104,26 @@ def create_user():
     if request.method == 'POST':
         name = request.form['name'] # Gets the information from the create.html. The variables are assigned in that form.
         location = request.form['location']
+        # Checks to see if the form has been filled out. If not, it will send the user a warning
         if not name:
             flash('Name is required')
         elif not location:
             flash('Location is required')
         else:
+            # After checks, it will send the information to the db, then redirect this user to the home page.
             user = User(name=name,location=location)
             db.session.add(user)
             db.session.commit()
             flash('Sucess!')
             return redirect(url_for('index',page=1))
     return render_template('create.html')
+
+# Simply kills--- Deletes* the user
+@app.route('/delete/<int:id>')
+def delete_user(id):
+    user = User.query.get(id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+    
+    return redirect(url_for('index',page=1))
