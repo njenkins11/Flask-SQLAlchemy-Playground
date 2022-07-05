@@ -11,22 +11,27 @@
 <hr>
 <br>
 <p> Insert the information below.</p>
-
+<br>
+<div class = "home" style="height:65vh;">
 <!-- Creates the form to send information back to Flask from the user.-->
     <form method='POST'>
         <!-- Getting the user's name -->
         <label for="name" style="color:white">Name</label> <!-- The label is essentially a variable that carries over to Flask. Or a JSON attribute.-->
         <input type="text" name="name" placeholder="User's name" value="{{ request.form['name'] }}"></input>
-
         <!-- Getting the user's location -->
         <label for="location" style="color:white"> Location</label>
         <input type="text" name="location" placeholder="User's location" value="{{ request.form['location'] }}"></input>
         <br>
         <br>
-        <!-- Creates the button to submit the form-->
-        <button type="submit" style="position: center;">Submit</button> 
-        <button type="button" onClick="window.location.href='{{url_for('redirect_index')}}'" style="text-align:center;"> Back </button>
     </form>
+        <table>
+            <tr>
+                <!-- Creates the button to submit the form-->
+                <td><button type="submit" style="text-align: center">Submit</button></td>
+                <td><button type="button" onClick="window.location.href='{{url_for('redirect_index')}}'" style="text-align:center;"> Back </button></td>
+            </tr>
+        </table>
+        <!--Gets info to flash messages if name or location is not provided.-->
     {%with messages = get_flashed_messages()%}
         {%if messages%}
             {%for message in messages%}
