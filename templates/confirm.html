@@ -9,14 +9,17 @@
 <html>
 <div class = "home" style="height:65vh;">
     <body>
-        <h1>{{user.name}}</h1>
+        <h1>Are you sure you want to delete?</h1>
+        <p>This user will be gone for a long time!</p>
         <hr>
         <table style = "width:40%; border-collapse:collapse">
             <tr>
+                <th style = "color:white; hover:orange; padding:8px; text-align: center;">Name</th>
                 <th style = "color:white; hover:orange; padding:8px; text-align: center;">Location</th>
                 <th style = "color:white; hover:orange; padding:8px; text-align: center;">Creation</th>
             </tr>
             <tr>
+                <td style = "color: white; text-align:center; width:10%">{{user.name}}</td>
                 <td style = "color: white; text-align:center; width:10%">{{user.location}}</td>
                 <td style = "color: white; text-align:center; width:10%">{{user.date_created}}</td>
             </tr>
@@ -25,9 +28,8 @@
         <hr>
         <table>
             <tr>
-            <td><button type="button" onClick="window.location.href='{{url_for('redirect_index')}}'" style="text-align:center;"> Back </button></td>
-            <td><button type="button" onClick="window.location.href='{{url_for('confirm_delete', id=user.id) }}'" style="text-align:center;"> Delete </button></td>
-            <td><button type="button" onClick="window.location.href='{{url_for('update_user', id=user.id) }}'" style="text-align:center;"> Update </button></td>
+            <td><button type="button" onClick="window.location.href='{{url_for('get_user', id=user.id)}}'" style="text-align:center;"> Back </button></td>
+            <td><button type="button" onClick="window.location.href='{{url_for('delete_user', id=user.id) }}'" style="text-align:center;"> Delete </button></td>
             </tr>
         </table>
 

@@ -114,6 +114,12 @@ def update_user(id):
     # Returns render if it was a GET request
     return render_template('update.html', user=user)
 
+@app.route('/delete/<int:id>/confirm')
+def confirm_delete(id):
+    user = User.query.get(id)
+
+    return render_template('confirm.html', user=user)
+
 # NOTESSSSS
 
 # Creates a route and defines any parameters for the url.
