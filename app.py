@@ -1,3 +1,4 @@
+from venv import create
 from flask import Flask, flash, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 
@@ -28,6 +29,13 @@ class User(db.Model):
     name = db.Column(db.String(50)) # The 50 within String(50) is the string length.
     location = db.Column(db.String(50))
     date_created = db.Column(db.DateTime, default=datetime.now) # Default is the default time. The datetime.now is a function which will be called when the row is created.
+    audit = db.relationship("Audit")
+
+class Audit(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    date = db.Column(db.DateTime, default=datetime.now)
+    message = db.Column(db.String(50))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
 # Database and Tables can be created with SQLAlchemy
 # By running 'from app import db'
@@ -99,14 +107,18 @@ def update_user(id):
     if request.method == 'POST':
         name = request.form['name']
         location = request.form['location']
+        audit = ""
 
         # If there is a name or a location, that means the user wants to change it
         if name:
+            audit += f"Changed from {user.name} to {name}."
             user.name = name
         if location:
+            audit += f"Changed from {user.location} to {location}."
             user.location = location
         
         # Updates the user by readding it. As long as it has the same id, it will update the user with that specific id, like in Spring Hibernate.
+        create_audit(id,audit)
         db.session.add(user)
         db.session.commit()
         # Redirects if the request is a POST
@@ -117,8 +129,12 @@ def update_user(id):
 @app.route('/delete/<int:id>/confirm')
 def confirm_delete(id):
     user = User.query.get(id)
-
     return render_template('confirm.html', user=user)
+
+def create_audit(id, message):
+    audit = Audit(user_id=id, message=message)
+    db.session.add(audit)
+    db.session.commit()
 
 # NOTESSSSS
 
