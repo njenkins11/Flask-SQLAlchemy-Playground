@@ -7,26 +7,27 @@
     <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.png')}}"/>
 </head>
 <html>
-<div class = "home" style="height:65vh">
+<div class = "home" style="height:65vh;">
     <body>
-        <h1> {{user.name}} </h1>
+        <h1>{{user.name}}</h1>
         <hr>
-        <table style="width:100%; text-align: center; justify-content: center;">
+        <table style = "width:40%; border-collapse:collapse">
             <tr>
-                <th style = "color: white; width:10%; text-align: center;"><p>Location</p></th>
-                <th style = "color: white; width:10%; text-align: center;"><p>Creation</p></th>
+                <th style = "color:white; hover:orange; padding:8px; text-align: center;">Location</th>
+                <th style = "color:white; hover:orange; padding:8px; text-align: center;">Creation</th>
             </tr>
             <tr>
-            <td style = "color: white; width:10%; text-align: center;"><p>{{user.location}} </p></td>
-            <td style = "color: white; width:10%; text-align: center;"><p>{{user.date_created}} </p><td>
+                <td style = "color: white; text-align:center; width:10%">{{user.location}}</td>
+                <td style = "color: white; text-align:center; width:10%">{{user.date_created}}</td>
             </tr>
         </table>
         <br>
+        <hr>
         <table>
             <tr>
-            <td style="width:10%"><a href = "{{url_for('index',page=1) }}" style = "color: white; text-decoration: none;"> Back </a></td>
-            <td style="width:10%"><a href = "{{url_for('delete_user', id=user.id) }}" style = "color: white; text-decoration: none;"> Delete </a></td>
-            <td style="width:10%"><a href = "{{url_for('update_user', id=user.id) }}" style = "color: white; text-decoration: none;"> Update </a></td>
+            <td><button type="button" onClick="window.location.href='{{url_for('redirect_index')}}'" style="text-align:center;"> Back </button></td>
+            <td><button type="button" onClick="window.location.href='{{url_for('delete_user', id=user.id) }}'" style="text-align:center;"> Delete </button></td>
+            <td><button type="button" onClick="window.location.href='{{url_for('update_user', id=user.id) }}'" style="text-align:center;"> Update </button></td>
             </tr>
         </table>
 

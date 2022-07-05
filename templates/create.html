@@ -8,6 +8,7 @@
     </head>
     <div class = "home" style="height:70vh">
 <h1> Creating a User </h1>
+<hr>
 <br>
 <p> Insert the information below.</p>
 
@@ -23,8 +24,8 @@
         <br>
         <br>
         <!-- Creates the button to submit the form-->
-        <button type="submit" style="position: relative;">Submit</button> 
-        <a href={{url_for('redirect_index')}} style="color:white; text-decoration: none;"> Back </a>
+        <button type="submit" style="position: center;">Submit</button> 
+        <button type="button" onClick="window.location.href='{{url_for('redirect_index')}}'" style="text-align:center;"> Back </button>
     </form>
     {%with messages = get_flashed_messages()%}
         {%if messages%}
