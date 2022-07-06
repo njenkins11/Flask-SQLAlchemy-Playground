@@ -6,7 +6,7 @@
     <link rel="stylesheet" href ="{{ url_for('static', filename='styles/index.css') }}" type="text/css" />
     <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.png')}}"/>
 </head>
-<div class = "home">
+<div class = "home" style = "height:100%">
     <body>
         <h1> Welcome! </h1>
         <h2> This is a simple website that does CRUDS with Flask + SQLAlchemy. </h2>
@@ -26,7 +26,7 @@
                         <p> Click on a person's name to edit! </p>
             <p> Current People: </p>
         {%endif%}
-        <!-- Loops through the users in this current page-->
+        <!-- Loops through the Users in this current page-->
         {%if users.total == 0 %}
             <p> No users were found. </p>
         {%else%}
@@ -54,13 +54,39 @@
             <td><button type="button" onClick="window.location.href='{{url_for('create_user')}}'" style="text-align:center;"> Add </button></td>
         <!-- Checks to see if there is either a next button or a previous button needed-->
         {%if users.has_prev%}
-            <td><button type="button" onClick="window.location.href='{{url_for('index', page=users.prev_num) }}'" style="text-align:center;"> Previous </button></td>
+            <td><button type="button" onClick="window.location.href='{{url_for('index', page=users.prev_num, audit_page=audits.page) }}'" style="text-align:center;"> Previous </button></td>
         {%endif%}
         {%if users.has_next%}
-            <td><button type="button" onClick="window.location.href='{{url_for('index', page=users.next_num) }}'" style="text-align:center;"> Next </button></td>
+            <td><button type="button" onClick="window.location.href='{{url_for('index', page=users.next_num, audit_page=audits.page) }}'" style="text-align:center;"> Next </button></td>
         {%endif%}
             </tr>
         </table>
+        <br>
+        <hr>
+        <h1> Recent Changes </h1>
+        {%for audit in audits.items%}
+        <table>
+            <tr>
+                <td style="color:white; word-spacing: 10px; hover:orange; padding:8px; width:30%; text-align: center;"> 
+                <a href = "{{url_for('get_audit', id=audit.id)}}" style="color:white; text-decoration: none;"> 
+                {{audit.date}} </td></a>
+                <td style="color:white; text-decoration: none; word-spacing: 10px; padding:8px; width:30%; text-align: center;"> 
+                {{audit.message}} </td>
+            </tr>
+
+        {%endfor%}
+             </table>
+        <hr>
+        <br>
+        <table>
+            <tr>
+        <!-- Checks to see if there is either a next button or a previous button needed-->
+        {%if audits.has_prev%}
+            <td><button type="button" onClick="window.location.href='{{url_for('index', page=users.page, audit_page=audits.prev_num) }}'" style="text-align:center;"> Previous </button></td>
+        {%endif%}
+        {%if audits.has_next%}
+            <td><button type="button" onClick="window.location.href='{{url_for('index', page=users.page, audit_page=audits.next_num) }}'" style="text-align:center;"> Next </button></td>
+        {%endif%}
     </body>
 </div>
 </html>

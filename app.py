@@ -52,23 +52,33 @@ def get_user(id):
     else:
         return '<h1> Invalid ID. </h1>' # If the name is not found
 
+@app.route('/audit/<int:id>')
+def get_audit(id):
+    audit = Audit.query.get(id)
+
+    if audit:
+        return '<h1> {{audit.message}} </h1>'
+    else:
+        return '<h1> Invalid Audit </h1>'
+
 # Home page
-@app.route('/<int:page>', methods=('GET', 'POST'))
-def index(page=1):
+@app.route('/users=<int:page>/audits=<int:audit_page>', methods=('GET', 'POST'))
+def index(page=1, audit_page=1):
     users = User.query.order_by(User.id).paginate(page,PAGE_SIZE,error_out=False) # Pagination!!!
+    audits = Audit.query.order_by(Audit.date).paginate(audit_page,PAGE_SIZE, error_out=False)
 
     # If it is a post request, filter through the db and re-render the website with the new users.
     if request.method == 'POST':
         search_name = request.form['name']
         if search_name:
             users = User.query.filter(User.name.like('%'+search_name+'%')).paginate(page,PAGE_SIZE,error_out=False)
-    return render_template("index.html", users=users) # Returns users to allow HTML to loop through the users for this current page
+    return render_template("index.html", users=users, audits=audits) # Returns users to allow HTML to loop through the users for this current page
 
 # Redirects to the index page above
 # Everyone must see the list mahaahahwa!!!
 @app.route('/')
 def redirect_index():
-    return redirect(url_for('index', page=1))
+    return redirect(url_for('index', page=1, audit_page=1))
 
 # Create user form
 @app.route('/create/', methods=('GET', 'POST')) # Have to get the information from the user to fill out a user row in the db.
@@ -84,6 +94,8 @@ def create_user():
         else:
             # After checks, it will send the information to the db, then redirect this user to the home page.
             user = User(name=name,location=location)
+            message = f"Created user {user.name}."
+            create_audit(user.id, message)
             db.session.add(user)
             db.session.commit()
             flash('Sucess!')
@@ -95,6 +107,8 @@ def create_user():
 def delete_user(id):
     user = User.query.get(id)
     if user:
+        message = f"Deleted {user.name} with an ID of {user.id}."
+        create_audit(id,message)
         db.session.delete(user)
         db.session.commit()
     
@@ -114,7 +128,7 @@ def update_user(id):
             audit += f"Changed from {user.name} to {name}."
             user.name = name
         if location:
-            audit += f"Changed from {user.location} to {location}."
+            audit += f"Changed {user.name}'s location from {user.location} to {location}."
             user.location = location
         
         # Updates the user by readding it. As long as it has the same id, it will update the user with that specific id, like in Spring Hibernate.
